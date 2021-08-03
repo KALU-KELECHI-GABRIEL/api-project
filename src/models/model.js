@@ -10,6 +10,7 @@ class Model {
   async select(columns, clause) {
     let query = `SELECT ${columns} FROM ${this.table}`;
     if (clause) query += clause;
+    console.log(query, 'here');
     return this.pool.query(query);
   }
 
@@ -17,8 +18,24 @@ class Model {
     const query = `
           INSERT INTO ${this.table}(${columns})
           VALUES (${values})
-          RETURNING id, ${columns}
+          RETURNING *, ${columns}
       `;
+    console.log(query);
+    return this.pool.query(query);
+  }
+
+  async updateWithReturn(update, clause) {
+    let query = ` UPDATE ${this.table} `;
+    query += update;
+    query += clause;
+    console.log(query);
+    return this.pool.query(query);
+  }
+
+  async delete(clause) {
+    let query = ` DELETE FROM ${this.table} `;
+    query += clause;
+    console.log(query);
     return this.pool.query(query);
   }
 }
